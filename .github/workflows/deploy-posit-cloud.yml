@@ -1,4 +1,4 @@
-name: Deploy to shinyapps.io
+name: Deploy to Posit Connect Cloud
 
 on:
   push:
@@ -36,27 +36,27 @@ jobs:
         fi
         echo "Database file found ($(du -h data-local/global-data.sqlite | cut -f1))"
     
-    - name: Authenticate with shinyapps.io
+    - name: Authenticate with Posit Connect Cloud
       env:
-        SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
-        SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
-        SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+        CONNECT_SERVER: ${{ secrets.CONNECT_SERVER }}
+        CONNECT_API_KEY: ${{ secrets.CONNECT_API_KEY }}
       run: |
-        rsconnect::setAccountInfo(
-          name = Sys.getenv("SHINYAPPS_ACCOUNT"),
-          token = Sys.getenv("SHINYAPPS_TOKEN"),
-          secret = Sys.getenv("SHINYAPPS_SECRET")
+        rsconnect::connectApiUser(
+          account = "andkov",
+          server = Sys.getenv("CONNECT_SERVER"),
+          apiKey = Sys.getenv("CONNECT_API_KEY")
         )
       shell: Rscript {0}
     
-    - name: Deploy to shinyapps.io
+    - name: Deploy to Posit Connect Cloud
       env:
-        SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
+        CONNECT_SERVER: ${{ secrets.CONNECT_SERVER }}
       run: |
         rsconnect::deployApp(
           appDir = ".",
           appName = "soc-app-1",
-          account = Sys.getenv("SHINYAPPS_ACCOUNT"),
+          account = "andkov",
+          server = Sys.getenv("CONNECT_SERVER"),
           forceUpdate = TRUE,
           launch.browser = FALSE
         )
