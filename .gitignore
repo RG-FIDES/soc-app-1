@@ -1,0 +1,15 @@
+# R specific
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Shiny app specific
+rsconnect/
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
