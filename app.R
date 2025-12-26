@@ -15,7 +15,14 @@ source("data-provisioning.R")
 
 # ---- Load Data ----
 # Connect to database (use path relative to project root)
-db_path <- "data-local/global-data.sqlite"`nif (!file.exists(db_path)) {`n  stop(paste0(`n    "Database not found at: ", db_path, "\n",`n    "Please ensure global-data.sqlite is present in data-local/ directory."`n  ))`n}`nmessage("Loading database from: ", db_path)
+db_path <- "data-local/global-data.sqlite"
+if (!file.exists(db_path)) {
+  stop(paste0(
+    "Database not found at: ", db_path, "\n",
+    "Please ensure global-data.sqlite is present in data-local/ directory."
+  ))
+}
+message("Loading database from: ", db_path)
 
 # Load neighborhoods with metrics using provisioning function
 neighborhoods_sf <- provision_neighborhood_metrics(db_path)
